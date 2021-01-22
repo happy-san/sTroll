@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-
-import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
-
-import 'flutter_video_icons.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_video/service.dart';
 
 void main() => runApp(new FilePickerDemo());
 
@@ -20,6 +19,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
   String _extension;
   bool _loadingPath = false;
   TextEditingController _controller = TextEditingController();
+  bool _isUploading = false;
 
   @override
   void initState() {
@@ -51,9 +51,27 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
     });
   }
 
+  List<String> _getFileInfo() {
+    final bool isMultiPath = _paths != null && _paths.isNotEmpty;
+    final String name = (isMultiPath
+        ? _paths.map((e) => e.name).toList().first
+        : _fileName ?? '...');
+    final path = _paths.map((e) => e.path).toList().first.toString();
+    return [name, path];
+  }
+
+  uploadFile(List<String> fileInfo) {
+    _isUploading = true;
+    UploadService.uploadVideoFile(fileInfo.first, fileInfo.last).then((value) {
+      print(value);
+      _isUploading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -66,90 +84,36 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50.0, bottom: 20.0),
-                    child: LayoutBuilder(
-                      builder: (_, constraints) => GestureDetector(
-                        onTap: () => _openFileExplorer(),
-                        child: Container(
-                          height: constraints.biggest.width,
-                          width: constraints.biggest.width,
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(
-                                constraints.biggest.width * 0.05),
-                          ),
-                          child: Center(
-                            child: Icon(
-                              Icons.video_collection,
-                              size: constraints.biggest.width,
-                            ),
-                          ),
-                        ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 50.0, bottom: 20.0),
+                        child: OutlineButton(
+                            onPressed: () =>
+                                _fileName != null ? null : _openFileExplorer(),
+                            child: Text(_fileName != null
+                                ? _getFileInfo()[0]
+                                : 'Select the Video File'),
+                            borderSide: BorderSide(color: Colors.blue),
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0))),
                       ),
-                    ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      _paths != null && _paths.isNotEmpty
+                          ? !_isUploading
+                              ? IconButton(
+                                  padding: EdgeInsets.all(0),
+                                  onPressed: () => uploadFile(_getFileInfo()),
+                                  icon: Icon(Icons.upload_outlined),
+                                )
+                              : CircularProgressIndicator()
+                          : SizedBox.shrink()
+                    ],
                   ),
-                  Builder(
-                    builder: (BuildContext context) => _loadingPath
-                        ? Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
-                            child: const CircularProgressIndicator(),
-                          )
-                        : _directoryPath != null
-                            ? ListTile(
-                                title: const Text('Directory path'),
-                                subtitle: Text(_directoryPath),
-                              )
-                            : _paths != null
-                                ? Container(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 30.0),
-                                    height: MediaQuery.of(context).size.height *
-                                        0.50,
-                                    child: Scrollbar(
-                                      child: ListView.separated(
-                                        itemCount:
-                                            _paths != null && _paths.isNotEmpty
-                                                ? _paths.length
-                                                : 1,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          final bool isMultiPath =
-                                              _paths != null &&
-                                                  _paths.isNotEmpty;
-                                          final String name = 'File $index: ' +
-                                              (isMultiPath
-                                                  ? _paths
-                                                      .map((e) => e.name)
-                                                      .toList()[index]
-                                                  : _fileName ?? '...');
-                                          final path = _paths
-                                              .map((e) => e.path)
-                                              .toList()[index]
-                                              .toString();
-
-                                          return ListTile(
-                                            title: Text(
-                                              name,
-                                            ),
-                                            subtitle: Text(path),
-                                          );
-                                        },
-                                        separatorBuilder:
-                                            (BuildContext context, int index) =>
-                                                const Divider(),
-                                      ),
-                                    ),
-                                  )
-                                : const SizedBox(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50.0, bottom: 20.0),
-                    child: ElevatedButton(
-                      onPressed: () => _openFileExplorer(),
-                      child: Text('Select the files'),
-                    ),
-                  )
                 ],
               ),
             ),
