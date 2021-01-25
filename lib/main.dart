@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'video_feed_tab.dart';
-import 'video_upload_tab.dart';
-import 'about_tab.dart';
+import 'ui/tabs/video_feed_tab.dart';
+import 'ui/tabs/video_upload_tab.dart';
+import 'ui/tabs/about_tab.dart';
 
 void main() => runApp(new FilePickerDemo());
 
@@ -24,36 +24,51 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: _tabs[_selectedTab],
+        body: IndexedStack(
+          index: _selectedTab,
+          children: _tabs,
+        ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedTab,
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
           items: [
             BottomNavigationBarItem(
               label: 'Home',
-              icon: Icon(
+              icon: const Icon(
                 Icons.home_outlined,
+                color: Colors.lightBlue,
+              ),
+              activeIcon: const Icon(
+                Icons.home,
                 color: Colors.blue,
               ),
             ),
             BottomNavigationBarItem(
               label: 'Upload',
-              icon: Icon(
-                Icons.upload_outlined,
+              icon: const Icon(
+                Icons.cloud_upload_outlined,
+                color: Colors.lightBlue,
+              ),
+              activeIcon: const Icon(
+                Icons.cloud_upload,
                 color: Colors.blue,
               ),
             ),
             BottomNavigationBarItem(
               label: 'About',
-              icon: Icon(
+              icon: const Icon(
                 Icons.account_box_outlined,
+                color: Colors.lightBlue,
+              ),
+              activeIcon: const Icon(
+                Icons.account_box,
                 color: Colors.blue,
               ),
             ),
           ],
           onTap: (newIndex) => setState(
-            () {
-              _selectedTab = newIndex;
-            },
+            () => _selectedTab = newIndex,
           ),
           backgroundColor: Colors.white,
         ),

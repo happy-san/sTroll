@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:video_player/video_player.dart';
 
-import 'service.dart';
+import '../../core/service.dart';
+import '../widgets/video_container.dart';
 
 class VideoUploadTab extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class VideoUploadTab extends StatefulWidget {
 
 class _VideoUploadTabState extends State<VideoUploadTab> {
   String _fileName;
-  List<PlatformFile> _paths;
+  PlatformFile _file;
   String _extension;
   bool _showVideoPreview = false;
   TextEditingController _controller = TextEditingController();
@@ -39,14 +40,14 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
       _showVideoPreview = false;
     });
     try {
-      _paths = (await FilePicker.platform.pickFiles(
+      _file = (await FilePicker.platform.pickFiles(
         type: FileType.video,
         allowMultiple: false,
         allowedExtensions: (_extension?.isNotEmpty ?? false)
             ? _extension?.replaceAll(' ', '')?.split(',')
             : null,
       ))
-          ?.files;
+          ?.files?.first;
     } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     } catch (ex) {
@@ -54,10 +55,10 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
     }
     if (!mounted) return;
     setState(() {
-      if (_paths != null) {
-        _fileName = _paths.map((e) => e.name).toString();
+      if (_file != null) {
+        _fileName = _file.name.toString();
 
-        _videoController = VideoPlayerController.file(File(_paths[0].path))
+        _videoController = VideoPlayerController.file(File(_file.path))
           ..initialize().then((_) {
             // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
             setState(() {
@@ -70,14 +71,7 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
     });
   }
 
-  List<String> _getFileInfo() {
-    final bool isMultiPath = _paths != null && _paths.isNotEmpty;
-    final String name = (isMultiPath
-        ? _paths.map((e) => e.name).toList().first
-        : _fileName ?? '...');
-    final path = _paths.map((e) => e.path).toList().first.toString();
-    return [name, path];
-  }
+  List<String> _getFileInfo() => [_file.name, _file.path.toString()];
 
   uploadFile(List<String> fileInfo) {
     _isUploading = true;
@@ -100,45 +94,27 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 50.0, bottom: 20.0),
-                  child: LayoutBuilder(
-                    builder: (_, constraints) => GestureDetector(
-                      onTap: () {
-                        if (_showVideoPreview) {
-                          setState(() {
-                            _videoController.value.isPlaying
-                                ? _videoController.pause()
-                                : _videoController.play();
-                          });
-                        }
-                      },
-                      child: Container(
-                        height: constraints.biggest.width,
-                        width: constraints.biggest.width,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(
-                              constraints.biggest.width * 0.05),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: _showVideoPreview
-                                ? AspectRatio(
-                                    aspectRatio:
-                                        _videoController.value.aspectRatio,
-                                    child: VideoPlayer(_videoController),
-                                  )
-                                : Icon(
-                                    Icons.video_collection,
-                                    size: constraints.biggest.width,
-                                    color: Colors.grey,
-                                  ),
+                GestureDetector(
+                  onTap: () {
+                    if (_showVideoPreview) {
+                      setState(() {
+                        _videoController.value.isPlaying
+                            ? _videoController.pause()
+                            : _videoController.play();
+                      });
+                    }
+                  },
+                  child: VideoContainer(
+                    child: _showVideoPreview
+                        ? AspectRatio(
+                            aspectRatio: _videoController.value.aspectRatio,
+                            child: VideoPlayer(_videoController),
+                          )
+                        : Icon(
+                            Icons.video_collection,
+                            size: MediaQuery.of(context).size.width * 0.9,
+                            color: Colors.grey,
                           ),
-                        ),
-                      ),
-                    ),
                   ),
                 ),
                 Padding(
@@ -159,7 +135,7 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
                             shape: new RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(30.0))),
                       ),
-                      _paths != null && _paths.isNotEmpty
+                      _file != null
                           ? !_isUploading
                               ? IconButton(
                                   padding: EdgeInsets.all(0),
