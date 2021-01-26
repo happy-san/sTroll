@@ -47,7 +47,8 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
             ? _extension?.replaceAll(' ', '')?.split(',')
             : null,
       ))
-          ?.files?.first;
+          ?.files
+          ?.first;
     } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     } catch (ex) {
@@ -104,17 +105,20 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
                       });
                     }
                   },
-                  child: VideoContainer(
-                    child: _showVideoPreview
-                        ? AspectRatio(
-                            aspectRatio: _videoController.value.aspectRatio,
-                            child: VideoPlayer(_videoController),
-                          )
-                        : Icon(
-                            Icons.video_collection,
-                            size: MediaQuery.of(context).size.width * 0.9,
-                            color: Colors.grey,
-                          ),
+                  child: LayoutBuilder(
+                    builder: (_, constraints) => VideoContainer(
+                      size: constraints.biggest.width,
+                      child: _showVideoPreview
+                          ? AspectRatio(
+                              aspectRatio: _videoController.value.aspectRatio,
+                              child: VideoPlayer(_videoController),
+                            )
+                          : Icon(
+                              Icons.video_collection,
+                              size: MediaQuery.of(context).size.width * 0.9,
+                              color: Colors.grey,
+                            ),
+                    ),
                   ),
                 ),
                 Padding(

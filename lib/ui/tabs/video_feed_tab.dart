@@ -15,8 +15,11 @@ class _VideoFeedTabState extends State<VideoFeedTab> {
         title: Text('sTroll feed'),
       ),
       body: ListView.builder(
-        itemBuilder: (_, __) => VideoFeedContainer(
-          child: null,
+        itemBuilder: (_, __) => LayoutBuilder(
+          builder: (_, constraints) => VideoFeedContainer(
+            child: null,
+            size: constraints.biggest.width,
+          ),
         ),
         itemCount: 15,
       ),
