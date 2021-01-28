@@ -5,18 +5,30 @@ class UploadService {
   // Limit uploads for more trolling.
   static int uploadCount = 0;
 
-  static String identityPool = ""; // will add here soon
+  static String identityPool =
+      ""; // will add here soon
 
   static Future<String> uploadVideoFile(
       String videoName, String videoPath) async {
-      String uploadedVideoUrl = await AmazonS3Cognito.upload(
-          videoPath,
-          "video-troll",
-          identityPool,
-          videoName,
-          AwsRegion.AP_EAST_1,
-          AwsRegion.AP_SOUTHEAST_1);
+    String uploadedVideoUrl = await AmazonS3Cognito.upload(
+        videoPath,
+        "video-troll",
+        identityPool,
+        videoName,
+        AwsRegion.US_EAST_1,
+        AwsRegion.US_EAST_1);
 
-      return uploadedVideoUrl;
+    return uploadedVideoUrl;
+  }
+
+  static Future<List<String>> listVideoFiles() async {
+    List<String> uploadedVideoUrl = await AmazonS3Cognito.listFiles(
+        "video-troll",
+        identityPool,
+        "",
+        "us-east-1",
+        "us-east-1"); // Bug-here in package
+
+    return uploadedVideoUrl;
   }
 }
