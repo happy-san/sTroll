@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../core/service.dart';
+import '../helper.dart';
 import '../widgets/video_container.dart';
 
 class VideoUploadTab extends StatefulWidget {
@@ -107,7 +108,7 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
                   },
                   child: LayoutBuilder(
                     builder: (_, constraints) => VideoContainer(
-                      size: constraints.biggest.width,
+                      size: getVideoContainerSize(constraints),
                       child: _showVideoPreview
                           ? AspectRatio(
                               aspectRatio: _videoController.value.aspectRatio,

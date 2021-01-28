@@ -1,12 +1,13 @@
 import 'package:amazon_s3_cognito/amazon_s3_cognito.dart';
 import 'package:amazon_s3_cognito/aws_region.dart';
 
+import 'secret.dart';
+
 class UploadService {
   // Limit uploads for more trolling.
   static int uploadCount = 0;
 
-  static String identityPool =
-      ""; // will add here soon
+  static const String identityPool = secret;
 
   static Future<String> uploadVideoFile(
       String videoName, String videoPath) async {
