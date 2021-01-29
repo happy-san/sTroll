@@ -1,9 +1,9 @@
 import 'package:amazon_s3_cognito/amazon_s3_cognito.dart';
 import 'package:amazon_s3_cognito/aws_region.dart';
 
-import 'secret.dart';
+import '../secret.dart';
 
-class UploadService {
+mixin UploadService {
   // Limit uploads for more trolling.
   static int uploadCount = 0;
 

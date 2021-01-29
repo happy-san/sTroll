@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../helper.dart';
-import '../../core/service.dart';
+import '../../core/services/upload_service.dart';
 import '../widgets/video_feed_container.dart';
 
 class VideoFeedTab extends StatelessWidget {

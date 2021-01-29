@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../core/service.dart';
+import '../../core/services/upload_service.dart';
 import '../helper.dart';
 import '../widgets/video_container.dart';
 
