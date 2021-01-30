@@ -18,6 +18,8 @@ dependencies:
   amazon_s3_cognito: ^0.5.2
   pedantic: ^1.9.2
   flutter_cache_manager: ^2.1.1
+  toast: ^0.1.5
+
 
 dev_dependencies:
   flutter_test:

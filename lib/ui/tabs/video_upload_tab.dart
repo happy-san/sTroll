@@ -1,8 +1,9 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:toast/toast.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../core/services/upload_service.dart';
@@ -76,10 +77,16 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
   List<String> _getFileInfo() => [_file.name, _file.path.toString()];
 
   uploadFile(List<String> fileInfo) {
-    _isUploading = true;
+    setState(() {
+      _isUploading = true;
+    });
     UploadService.uploadVideoFile(fileInfo.first, fileInfo.last).then((value) {
       print(value);
-      _isUploading = false;
+      setState(() {
+        _isUploading = false;
+        Toast.show("File Uploaded!!", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      });
     });
   }
 
@@ -131,8 +138,7 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
                         child: OutlineButton(
-                            onPressed: () =>
-                                _fileName != null ? null : _openFileExplorer(),
+                            onPressed: () => _openFileExplorer(),
                             child: Text(_fileName != null
                                 ? _getFileInfo()[0]
                                 : 'Select the Video File'),
