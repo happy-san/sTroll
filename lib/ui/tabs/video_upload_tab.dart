@@ -87,6 +87,9 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
         Toast.show("File Uploaded!!", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       });
+    }).catchError((error){
+      Toast.show("Error Occurred while uploading!", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     });
   }
 
