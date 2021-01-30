@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../helper.dart';
-import '../../core/services/upload_service.dart';
+import '../../core/services/api.dart';
 import '../widgets/video_feed_container.dart';
 
 class VideoFeedTab extends StatelessWidget {
@@ -12,7 +12,7 @@ class VideoFeedTab extends StatelessWidget {
         title: Text('sTroll feed'),
       ),
       body: FutureBuilder(
-        future: UploadService.listVideoFiles(),
+        future: Api().listVideoFiles(),
         builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

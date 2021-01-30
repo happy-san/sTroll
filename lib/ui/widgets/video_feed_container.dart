@@ -95,7 +95,7 @@ class _VideoFeedContainerState extends State<VideoFeedContainer> {
                     aspectRatio: _controller.value.aspectRatio,
                     child: VideoPlayer(_controller),
                   )
-                : Container(),
+                : const SizedBox(),
             size: widget.size,
           ),
         ),

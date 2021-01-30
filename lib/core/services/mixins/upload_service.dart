@@ -1,7 +1,7 @@
 import 'package:amazon_s3_cognito/amazon_s3_cognito.dart';
 import 'package:amazon_s3_cognito/aws_region.dart';
 
-import '../secret.dart';
+import '../../secret.dart';
 
 mixin UploadService {
   // Limit uploads for more trolling.
@@ -9,8 +9,7 @@ mixin UploadService {
 
   static const String identityPool = secret;
 
-  static Future<String> uploadVideoFile(
-      String videoName, String videoPath) async {
+  Future<String> uploadVideoFile({String videoName, String videoPath}) async {
     String uploadedVideoUrl = await AmazonS3Cognito.upload(
         videoPath,
         "video-troll",
@@ -22,7 +21,7 @@ mixin UploadService {
     return uploadedVideoUrl;
   }
 
-  static Future<List<String>> listVideoFiles() async {
+  Future<List<String>> listVideoFiles() async {
     List<String> uploadedVideoUrl = await AmazonS3Cognito.listFiles(
         "video-troll",
         identityPool,
