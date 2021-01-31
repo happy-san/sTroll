@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 mixin CroppingService {
   Future<File> getCroppedFile(PlatformFile inputFile) async {
@@ -103,6 +103,6 @@ mixin CroppingService {
 
   String _getDirectory(PlatformFile file) =>
       file.path.replaceAll(RegExp(r'[\w+\-\.]+\.[a-zA-z0-9]+$'), '');
-  
+
   String getName(File file) => file.path.split('/').last;
 }
