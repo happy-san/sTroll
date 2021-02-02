@@ -35,22 +35,25 @@ class VideoFeedTab extends StatelessWidget {
           if (list.isEmpty) {
             return Center(child: CircularProgressIndicator());
           } else {
-            return ListView.separated(
-              separatorBuilder: (_,__) => Padding(padding: const EdgeInsets.symmetric(vertical: 3),),
-              itemBuilder: (_, index) => LayoutBuilder(
-                builder: (_, constraints) {
-                  final fileName = list[index].split("/").last;
-                  final baseURL = "https://video-troll.s3.amazonaws.com/";
-                  final videoURL = baseURL + fileName;
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: ListView.separated(
+                separatorBuilder: (_,__) => Padding(padding: const EdgeInsets.symmetric(vertical: 3),),
+                itemBuilder: (_, index) => LayoutBuilder(
+                  builder: (_, constraints) {
+                    final fileName = list[index].split("/").last;
+                    final baseURL = "https://video-troll.s3.amazonaws.com/";
+                    final videoURL = baseURL + fileName;
 
-                  return VideoFeedContainer(
-                    key: Key(videoURL),
-                    size: getVideoContainerSize(constraints),
-                    videoURL: videoURL,
-                  );
-                },
+                    return VideoFeedContainer(
+                      key: Key(videoURL),
+                      size: getVideoContainerSize(constraints),
+                      videoURL: videoURL,
+                    );
+                  },
+                ),
+                itemCount: list.length,
               ),
-              itemCount: list.length,
             );
           }
         },
