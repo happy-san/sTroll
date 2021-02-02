@@ -1,78 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'ui/tabs/video_feed_tab.dart';
-import 'ui/tabs/video_upload_tab.dart';
-import 'ui/tabs/about_tab.dart';
+import 'ui/screens/splash.dart';
+import 'ui/screens/home.dart';
 
-void main() => runApp(new FilePickerDemo());
+void main() {
+  final app = sTroll();
 
-class FilePickerDemo extends StatefulWidget {
-  @override
-  _FilePickerDemoState createState() => _FilePickerDemoState();
+  runApp(
+    ProviderScope(child: app),
+  );
 }
 
-class _FilePickerDemoState extends State<FilePickerDemo> {
-  int _selectedTab = 0;
-  static List<Widget> _tabs = <Widget>[
-    VideoFeedTab(),
-    VideoUploadTab(),
-    AboutTab(),
-  ];
+final urlsProvider = StateProvider<List<String>>((ref) => []);
+
+class sTroll extends StatelessWidget {
+  final _home = Home(), _splash = Splash();
 
   @override
   Widget build(BuildContext context) {
+    print('build sTroll');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: IndexedStack(
-          index: _selectedTab,
-          children: _tabs,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedTab,
-          showUnselectedLabels: false,
-          showSelectedLabels: false,
-          items: [
-            BottomNavigationBarItem(
-              label: 'Home',
-              icon: const Icon(
-                Icons.home_outlined,
-                color: Colors.lightBlue,
-              ),
-              activeIcon: const Icon(
-                Icons.home,
-                color: Colors.blue,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: 'Upload',
-              icon: const Icon(
-                Icons.cloud_upload_outlined,
-                color: Colors.lightBlue,
-              ),
-              activeIcon: const Icon(
-                Icons.cloud_upload,
-                color: Colors.blue,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: 'About',
-              icon: const Icon(
-                Icons.account_box_outlined,
-                color: Colors.lightBlue,
-              ),
-              activeIcon: const Icon(
-                Icons.account_box,
-                color: Colors.blue,
-              ),
-            ),
-          ],
-          onTap: (newIndex) => setState(
-            () => _selectedTab = newIndex,
-          ),
-          backgroundColor: Colors.white,
-        ),
-      ),
+      initialRoute: '/splash',
+      routes: {
+        '/': (_) => _home,
+        '/splash': (_) => _splash,
+      },
     );
   }
 }

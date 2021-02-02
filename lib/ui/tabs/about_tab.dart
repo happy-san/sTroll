@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-class AboutTab extends StatefulWidget {
-  @override
-  _AboutTabState createState() => _AboutTabState();
-}
+class AboutTab extends StatelessWidget {
+  const AboutTab();
 
-class _AboutTabState extends State<AboutTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Hi'),),
+      appBar: AppBar(
+        title: Text('Hi'),
+      ),
     );
   }
 }

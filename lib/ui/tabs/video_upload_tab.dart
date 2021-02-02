@@ -10,6 +10,8 @@ import '../helper.dart';
 import '../widgets/video_container.dart';
 
 class VideoUploadTab extends StatefulWidget {
+  const VideoUploadTab();
+
   @override
   _VideoUploadTabState createState() => _VideoUploadTabState();
 }
@@ -36,8 +38,6 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
     Api()
         .uploadVideoFile(videoName: fileInfo.first, videoPath: fileInfo.last)
         .then((value) {
-      _isUploading = true;
-
       print(value);
       setState(() {
         _isUploading = false;
@@ -116,7 +116,7 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
                                         setState(() {
                                           _showVideoPreview = true;
                                         });
-                                      });
+                                      })..setLooping(true);
                               },
                               child: Text(_selectedFile != null
                                   ? _getFileInfo()[0]

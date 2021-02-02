@@ -28,7 +28,7 @@ class _VideoFeedContainerState extends State<VideoFeedContainer> {
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
-      });
+      })..setLooping(true);
   }
 
   @override
