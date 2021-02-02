@@ -39,8 +39,8 @@ class _VideoFeedContainerState extends State<VideoFeedContainer> {
     return Stack(
       children: [
         SizedBox(
-          // Top margin of VideoContainer + Size of VideoContainer + Size of SplashIconButton
-          height: 8 + widget.size + _iconSize,
+          // Size of VideoContainer + Size of SplashIconButton
+          height: widget.size + _iconSize,
         ),
         Positioned(
           bottom: 0,
@@ -91,10 +91,7 @@ class _VideoFeedContainerState extends State<VideoFeedContainer> {
           },
           child: VideoContainer(
             child: _controller.value.initialized
-                ? AspectRatio(
-                    aspectRatio: _controller.value.aspectRatio,
-                    child: VideoPlayer(_controller),
-                  )
+                ?  VideoPlayer(_controller)
                 : const SizedBox(),
             size: widget.size,
           ),

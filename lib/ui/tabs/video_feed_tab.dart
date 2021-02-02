@@ -35,7 +35,8 @@ class VideoFeedTab extends StatelessWidget {
           if (list.isEmpty) {
             return Center(child: CircularProgressIndicator());
           } else {
-            return ListView.builder(
+            return ListView.separated(
+              separatorBuilder: (_,__) => Padding(padding: const EdgeInsets.symmetric(vertical: 3),),
               itemBuilder: (_, index) => LayoutBuilder(
                 builder: (_, constraints) {
                   final fileName = list[index].split("/").last;

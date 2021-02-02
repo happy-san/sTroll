@@ -17,8 +17,7 @@ class VideoContainer extends StatelessWidget {
     return Container(
       height: size,
       width: size,
-      margin: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
-      padding: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.only(left: 8.0, right: 8.0),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: Colors.grey[200],
