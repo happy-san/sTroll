@@ -77,10 +77,7 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
                     builder: (_, constraints) => VideoContainer(
                       size: getVideoContainerSize(constraints),
                       child: _showVideoPreview
-                          ? AspectRatio(
-                              aspectRatio: _videoController.value.aspectRatio,
-                              child: VideoPlayer(_videoController),
-                            )
+                          ? VideoPlayer(_videoController)
                           : Icon(
                               Icons.video_collection,
                               size: MediaQuery.of(context).size.width * 0.9,
@@ -116,7 +113,8 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
                                         setState(() {
                                           _showVideoPreview = true;
                                         });
-                                      })..setLooping(true);
+                                      })
+                                      ..setLooping(true);
                               },
                               child: Text(_selectedFile != null
                                   ? _getFileInfo()[0]
@@ -126,18 +124,22 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
                                   borderRadius:
                                       new BorderRadius.circular(30.0))),
                         ),
-                        _selectedFile != null
-                            ? !_isUploading
-                                ? IconButton(
-                                    padding: EdgeInsets.all(0),
-                                    onPressed: () => uploadFile(_getFileInfo()),
-                                    icon: Icon(
-                                      Icons.upload_outlined,
-                                      color: Colors.blue,
-                                    ),
-                                  )
-                                : const CircularProgressIndicator()
-                            : const SizedBox(),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: _selectedFile != null
+                              ? !_isUploading
+                                  ? IconButton(
+                                      padding: EdgeInsets.all(0),
+                                      onPressed: () =>
+                                          uploadFile(_getFileInfo()),
+                                      icon: Icon(
+                                        Icons.upload_outlined,
+                                        color: Colors.blue,
+                                      ),
+                                    )
+                                  : const CircularProgressIndicator()
+                              : const SizedBox(),
+                        )
                       ],
                     ),
                   ),

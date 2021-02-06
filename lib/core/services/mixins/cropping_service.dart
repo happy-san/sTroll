@@ -8,8 +8,6 @@ mixin CroppingService {
     var map = await _getVideoDimensions(filePath: inputFile.path);
     final width = map['width'], height = map['height'];
 
-    print('Input file- Width: $width, Height: $height');
-
     if (width != height) {
       FlutterFFmpeg()
           .executeWithArguments(
@@ -17,9 +15,6 @@ mixin CroppingService {
           .then((rc) => print("FFmpeg process exited with rc $rc"));
 
       final outputFilePath = _getOutputFilePath(inputFile);
-
-      map = await _getVideoDimensions(filePath: outputFilePath);
-      print('Output file- Width: ${map['width']}, Height: ${map['height']}');
 
       // TODO: delete *_cropped file after upload finishes.
       return File(outputFilePath);

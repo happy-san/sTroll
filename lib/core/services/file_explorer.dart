@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 
+import 'working_notifier.dart';
 import 'mixins/cropping_service.dart';
 
-class FileExplorer with CroppingService {
+class FileExplorer extends WorkingNotifier with CroppingService {
   static final _instance = FileExplorer._();
 
   factory FileExplorer() => _instance;
@@ -13,6 +14,8 @@ class FileExplorer with CroppingService {
   FileExplorer._();
 
   Future<File> openFileExplorer() async {
+    isWorking = true;
+
     PlatformFile _selectedFile;
     File _croppedFile;
 
@@ -23,18 +26,20 @@ class FileExplorer with CroppingService {
       ))
           ?.files
           ?.first;
+      print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>${_selectedFile?.size}');
+      await Future.delayed(Duration(seconds: 2));
 
       if (_selectedFile != null) {
         _croppedFile = await getCroppedFile(_selectedFile);
-        print(_croppedFile.path);
-        return _croppedFile;
       }
     } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     } catch (ex) {
       print(ex);
+    } finally {
+      isWorking = false;
     }
 
-    return null;
+    return File(_croppedFile?.path);
   }
 }
