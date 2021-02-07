@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class WorkingNotifier extends ChangeNotifier{
+abstract class WorkingNotifier extends ChangeNotifier {
   bool _isWorking = false;
 
   bool get isWorking => _isWorking;

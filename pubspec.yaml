@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  file_picker: ^2.1.5+1
+  file_picker: ^2.1.6
   video_player: ^1.0.1
   cupertino_icons: ^1.0.0
   amazon_s3_cognito: ^0.5.2
