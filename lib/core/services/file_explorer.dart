@@ -26,14 +26,13 @@ class FileExplorer extends WorkingNotifier with CroppingService {
       ))
           ?.files
           ?.first;
-      print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>${_selectedFile?.size}');
-      await Future.delayed(Duration(seconds: 2));
+
+      final size = _selectedFile?.size.toString();
 
       if (_selectedFile != null) {
-        _croppedFile = await getCroppedFile(_selectedFile);
+        _croppedFile = await _tryCrop(
+            size.length > 5 ? size.length - 5 : 1, _selectedFile);
       }
-    } on PlatformException catch (e) {
-      print("Unsupported operation" + e.toString());
     } catch (ex) {
       print(ex);
     } finally {
@@ -41,5 +40,26 @@ class FileExplorer extends WorkingNotifier with CroppingService {
     }
 
     return File(_croppedFile?.path);
+  }
+
+  Future<File> _tryCrop(int triesLeft, PlatformFile selectedFile) async {
+    File croppedFile;
+    if (triesLeft > 0) {
+      try {
+        croppedFile = await getCroppedFile(selectedFile);
+        if (croppedFile != null) {
+          return croppedFile;
+        } else {
+          throw ('Couldn\'t crop, trying again (tries left: ${triesLeft - 1})');
+        }
+      } on PlatformException catch (e) {
+        print("Unsupported operation" + e.toString());
+      } catch (e) {
+        print(e);
+        croppedFile = await _tryCrop(triesLeft - 1, selectedFile);
+      }
+    }
+
+    return croppedFile;
   }
 }
