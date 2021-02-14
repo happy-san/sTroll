@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../main.dart';
+import '../../../main.dart';
 import 'video_container.dart';
-import 'splash_icon_button.dart';
+import '../splash_icon_button.dart';
 
 class VideoFeedContainer extends StatefulWidget {
   final String videoURL;

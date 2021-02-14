@@ -12,4 +12,6 @@ class VideoPickerViewModel extends WorkingNotifier {
     isWorking = false;
     return videoFile == null ? false : true;
   }
+
+  String getName(File file) => FileExplorer().getName(file);
 }

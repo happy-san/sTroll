@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_video/main.dart';
 
-import '../helper.dart';
-import '../widgets/video_feed_container.dart';
+import '../../main.dart';
+import '../widgets/videoContainers/video_feed_container.dart';
 
-class VideoFeedTab extends StatelessWidget {
+class VideoFeedTab extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final layout = watch(layoutHelper);
+    final list = watch(urlsProvider).state;
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -28,17 +30,14 @@ class VideoFeedTab extends StatelessWidget {
           ],
         ),
       ),
-      body: Consumer(
-        builder: (_, watch, __) {
-          final list = watch(urlsProvider).state;
-
-          if (list.isEmpty) {
-            return Center(child: CircularProgressIndicator());
-          } else {
-            return Padding(
+      body: (list.isEmpty)
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: ListView.separated(
-                separatorBuilder: (_,__) => Padding(padding: const EdgeInsets.symmetric(vertical: 3),),
+                separatorBuilder: (_, __) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                ),
                 itemBuilder: (_, index) => LayoutBuilder(
                   builder: (_, constraints) {
                     final fileName = list[index].split("/").last;
@@ -47,17 +46,14 @@ class VideoFeedTab extends StatelessWidget {
 
                     return VideoFeedContainer(
                       key: Key(videoURL),
-                      size: getVideoContainerSize(constraints),
+                      size: layout.getVideoContainerSize(constraints),
                       videoURL: videoURL,
                     );
                   },
                 ),
                 itemCount: list.length,
               ),
-            );
-          }
-        },
-      ),
+            ),
     );
   }
 }

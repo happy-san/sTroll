@@ -99,5 +99,6 @@ mixin CroppingService {
   String _getDirectory(PlatformFile file) =>
       file.path.replaceAll(RegExp(r'[\w+\-\.]+\.[a-zA-z0-9]+$'), '');
 
-  String getName(File file) => file.path.split('/').last;
+  String getName(File file) =>
+      file.path.contains('/') ? file.path.split('/').last : file.path;
 }

@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
 
-import 'working_notifier.dart';
 import 'mixins/cropping_service.dart';
 
-class FileExplorer extends WorkingNotifier with CroppingService {
+class FileExplorer with CroppingService {
   static final _instance = FileExplorer._();
 
   factory FileExplorer() => _instance;
@@ -14,8 +13,6 @@ class FileExplorer extends WorkingNotifier with CroppingService {
   FileExplorer._();
 
   Future<File> openFileExplorer() async {
-    isWorking = true;
-
     PlatformFile _selectedFile;
     File _croppedFile;
 
@@ -35,8 +32,6 @@ class FileExplorer extends WorkingNotifier with CroppingService {
       }
     } catch (ex) {
       print(ex);
-    } finally {
-      isWorking = false;
     }
 
     return File(_croppedFile?.path);
