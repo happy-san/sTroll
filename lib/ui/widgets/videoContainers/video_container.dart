@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../helper.dart';
+import '../../main.dart';
 
-class VideoContainer extends StatelessWidget {
+class VideoContainer extends ConsumerWidget {
   final Widget child;
   final double size;
   final Key key;
@@ -11,8 +12,8 @@ class VideoContainer extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final _borderRadius = size * borderRadiusMultiplier;
+  Widget build(BuildContext context, ScopedReader watch) {
+    final _borderRadius = size * watch(layoutHelper).borderRadiusMultiplier;
 
     return Container(
       height: size,
