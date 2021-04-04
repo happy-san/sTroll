@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toast/toast.dart';
 
 import '../../main.dart';
+import '../../ui/layout_helper.dart';
 import 'splash_icon_button.dart';
 
 class VideoUploadIconButton extends ConsumerWidget {
@@ -14,7 +15,6 @@ class VideoUploadIconButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final layout = watch(layoutHelper);
     final uploader = watch(videoUploader);
 
     return Padding(
@@ -23,7 +23,7 @@ class VideoUploadIconButton extends ConsumerWidget {
           ? uploader.isWorking
               ? const CircularProgressIndicator()
               : SplashIconButton(
-                  size: size * layout.iconSizeMultiplier,
+                  size: size * LayoutHelper.iconSizeMultiplier,
                   onTap: () async {
                     var uploadSuccessful = await uploader.uploadVideoFile(
                         videoName: videoName, videoPath: videoPath);

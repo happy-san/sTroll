@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../main.dart';
+import '../../ui/layout_helper.dart';
 import '../widgets/videoContainers/video_feed_container.dart';
 
 class VideoFeedTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final layout = watch(layoutHelper);
     final list = watch(urlsProvider).state;
 
     return Scaffold(
@@ -46,7 +46,7 @@ class VideoFeedTab extends ConsumerWidget {
 
                     return VideoFeedContainer(
                       key: Key(videoURL),
-                      size: layout.getVideoContainerSize(constraints),
+                      size: LayoutHelper.getVideoContainerSize(constraints),
                       videoURL: videoURL,
                     );
                   },

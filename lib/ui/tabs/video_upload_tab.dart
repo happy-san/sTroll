@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../main.dart';
+import '../../ui/layout_helper.dart';
 import '../widgets/video_upload_icon_button.dart';
 import '../widgets/videoContainers/video_upload_container.dart';
 
@@ -35,13 +36,12 @@ class _VideoUploadTabState extends State<VideoUploadTab> {
             child: Consumer(builder:
                 (BuildContext context, ScopedReader watch, Widget child) {
               final picker = watch(videoPicker);
-              final layout = watch(layoutHelper);
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   LayoutBuilder(
                     builder: (_, constraints) => VideoUploadContainer(
-                      size: layout.getVideoContainerSize(constraints),
+                      size: LayoutHelper.getVideoContainerSize(constraints),
                       videoFile: picker.videoFile,
                       isFileExplorerOpen: picker.isWorking,
                       controller: _controller,

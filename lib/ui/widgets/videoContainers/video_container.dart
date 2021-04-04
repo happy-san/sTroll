@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../main.dart';
+import '../../../ui/layout_helper.dart';
 
 class VideoContainer extends ConsumerWidget {
   final Widget child;
@@ -13,7 +13,7 @@ class VideoContainer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final _borderRadius = size * watch(layoutHelper).borderRadiusMultiplier;
+    final _borderRadius = size * LayoutHelper.borderRadiusMultiplier;
 
     return Container(
       height: size,

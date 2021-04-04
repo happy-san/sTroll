@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/viewModels/video_picker_view_model.dart';
 import 'core/viewModels/video_upload_view_model.dart';
 
-import 'ui/layout_helper.dart';
 import 'ui/screens/splash.dart';
 import 'ui/screens/home.dart';
 
@@ -16,7 +15,6 @@ void main() {
   );
 }
 
-final layoutHelper = Provider<LayoutHelper>((_) => LayoutHelper());
 final urlsProvider = StateProvider<List<String>>((_) => []);
 final videoPicker =
     ChangeNotifierProvider<VideoPickerViewModel>((_) => VideoPickerViewModel());

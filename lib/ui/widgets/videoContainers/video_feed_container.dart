@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../main.dart';
+import '../../../ui/layout_helper.dart';
 import 'video_container.dart';
 import '../splash_icon_button.dart';
 
@@ -37,9 +37,9 @@ class _VideoFeedContainerState extends State<VideoFeedContainer> {
   Widget build(BuildContext context) {
     return Consumer(
         builder: (BuildContext context, ScopedReader watch, Widget child) {
-      final _iconSize = widget.size * watch(layoutHelper).iconSizeMultiplier;
+      final _iconSize = widget.size * LayoutHelper.iconSizeMultiplier;
       final _borderRadius =
-          widget.size * watch(layoutHelper).borderRadiusMultiplier;
+          widget.size * LayoutHelper.borderRadiusMultiplier;
 
       return Stack(
         children: [
