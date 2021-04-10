@@ -1,75 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../tabs/video_feed_tab.dart';
-import '../tabs/video_upload_tab.dart';
-import '../tabs/about_tab.dart';
+import '../../providers.dart';
 
-class Home extends StatefulWidget {
-  const Home();
+import 'navContents/nav_screen_content.dart';
+import 'navContents/video_feed.dart';
+import 'navContents/video_upload.dart';
+import 'navContents/about.dart';
+import '../widgets/bottom_nav_bar.dart';
+import '../widgets/nav_screen_container.dart';
 
+final _navScreenContents = <NavScreenContent>[
+      VideoFeed(),
+      VideoUpload(),
+      About(),
+    ],
+    _bottomNavBar = BottomNavBar(
+      _navScreenContents
+          .map(
+            (content) => BottomNavItem(
+              _navScreenContents.indexOf(content),
+              content.title,
+              content.iconData,
+              key: Key(content.title),
+            ),
+          )
+          .toList(growable: false),
+    );
+
+class Home extends ConsumerWidget {
   @override
-  _HomeState createState() => _HomeState();
+  Widget build(BuildContext context, ScopedReader watch) {
+    return Material(
+      child: IndexedStack(
+        index: watch(bottomNavIndex).state,
+        children: _navScreenContents
+            .map(
+              (content) => NavScreen(content),
+            )
+            .toList(growable: false),
+      ),
+    );
+  }
 }
 
-class _HomeState extends State<Home> {
-  int _selectedTab = 0;
-  static final _tabs = <Widget>[
-    VideoFeedTab(),
-    VideoUploadTab(),
-    AboutTab(),
-  ];
+class NavScreen extends StatelessWidget {
+  final NavScreenContent content;
+
+  const NavScreen(this.content, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _selectedTab,
-        children: _tabs,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedTab,
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
-        items: [
-          BottomNavigationBarItem(
-            label: 'Home',
-            icon: const Icon(
-              Icons.home_outlined,
-              color: Colors.lightBlue,
-            ),
-            activeIcon: const Icon(
-              Icons.home,
-              color: Colors.blue,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Upload',
-            icon: const Icon(
-              Icons.cloud_upload_outlined,
-              color: Colors.lightBlue,
-            ),
-            activeIcon: const Icon(
-              Icons.cloud_upload,
-              color: Colors.blue,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'About',
-            icon: const Icon(
-              Icons.account_box_outlined,
-              color: Colors.lightBlue,
-            ),
-            activeIcon: const Icon(
-              Icons.account_box,
-              color: Colors.blue,
-            ),
-          ),
-        ],
-        onTap: (newIndex) => setState(
-          () => _selectedTab = newIndex,
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.topCenter,
+          child: NavScreenContainer(child: content),
         ),
-        backgroundColor: Colors.white,
-      ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: _bottomNavBar,
+        )
+      ],
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../main.dart';
+import '../../providers.dart';
 import '../../core/services/api.dart';
 
 class Splash extends StatelessWidget {
@@ -19,10 +19,7 @@ class Splash extends StatelessWidget {
 
     return Material(
       color: Colors.white,
-      child: Hero(
-        tag: 'hero',
-        child: FlutterLogo(),
-      ),
+      child: FlutterLogo(),
     );
   }
 }

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'core/viewModels/video_picker_view_model.dart';
-import 'core/viewModels/video_upload_view_model.dart';
-
 import 'ui/screens/splash.dart';
 import 'ui/screens/home.dart';
 
@@ -14,12 +11,6 @@ void main() {
     ProviderScope(child: app),
   );
 }
-
-final urlsProvider = StateProvider<List<String>>((_) => []);
-final videoPicker =
-    ChangeNotifierProvider<VideoPickerViewModel>((_) => VideoPickerViewModel());
-final videoUploader =
-    ChangeNotifierProvider<VideoUploadViewModel>((_) => VideoUploadViewModel());
 
 class sTroll extends StatelessWidget {
   final _home = Home(), _splash = Splash();
@@ -34,6 +25,7 @@ class sTroll extends StatelessWidget {
         '/': (_) => _home,
         '/splash': (_) => _splash,
       },
+      theme: Theme.of(context).copyWith(accentColor: Colors.deepPurpleAccent),
     );
   }
 }

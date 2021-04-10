@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toast/toast.dart';
 
-import '../../main.dart';
+import '../../providers.dart';
 import '../../ui/layout_helper.dart';
 import 'splash_icon_button.dart';
 

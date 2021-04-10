@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../layout_helper.dart';
+
 class SplashIconButton extends StatelessWidget {
   final double size;
   final Icon icon;
@@ -22,7 +24,9 @@ class SplashIconButton extends StatelessWidget {
       height: size,
       width: size,
       child: Material(
-        color: Colors.transparent,
+        color: Colors.white70,
+        elevation: LayoutHelper.tappableElevation,
+        shape: CircleBorder(),
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.all(
